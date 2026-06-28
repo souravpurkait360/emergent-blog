@@ -47,6 +47,7 @@ A full-stack blog application built with Django DRF (backend), React (frontend),
 - [ ] User avatar upload
 - [ ] Post read time estimate
 - [x] Ruff: run ruff check . --fix and format — DONE (0 violations)
+- [x] Test architecture enforced: root tests/ removed, each app owns apps/<app>/tests/integration/ — 48/48 pass
 
 ## P1 Backlog (Important)
 - [ ] Post bookmarking/favorites
