@@ -19,7 +19,16 @@ export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [categories, setCategories] = useState([]);
   const [newCat, setNewCat] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [stats, setStats] = useState({ posts: 0, users: 0, categories: 0 });
+
+  useEffect(() => {
+    // Load stats on mount
+    Promise.all([
+      client.get('/posts/admin/').then(r => { const d = r.data; return d.count || (d.results || d).length; }),
+      client.get('/auth/users/').then(r => { const d = r.data; return d.count || (d.results || d).length; }),
+      client.get('/categories/').then(r => { const d = r.data; return d.count || (d.results || d).length; }),
+    ]).then(([p, u, c]) => setStats({ posts: p, users: u, categories: c })).catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (tab === 'posts') client.get('/posts/admin/').then(r => setPosts(r.data.results || r.data || []));
@@ -62,9 +71,9 @@ export default function AdminDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: 'Total Posts', val: posts.length, icon: FileText },
-          { label: 'Users', val: users.length, icon: Users },
-          { label: 'Categories', val: categories.length, icon: Layers },
+          { label: 'Total Posts', val: stats.posts, icon: FileText },
+          { label: 'Users', val: stats.users, icon: Users },
+          { label: 'Categories', val: stats.categories, icon: Layers },
         ].map(({ label, val, icon: Icon }) => (
           <div key={label} className="border border-[#E4E4E7] bg-white p-6">
             <Icon size={20} className="text-[#002FA7] mb-2" />
