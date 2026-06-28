@@ -1,0 +1,140 @@
+{
+  "theme": "Light",
+  "archetype": "Archetype 4: Swiss & High-Contrast",
+  "domain": "Blog Application / Content Platform",
+  "design_philosophy": "Objective, rigid, and functional. An editorial experience that relies on 'out-sized typography', 'floating minimalism', and 'calm design' principles. We prioritize reading clarity, tension through asymmetry, and a high-end magazine feel without the clutter. No generic rounded SaaS cards—everything is sharp, intentional, and grid-based.",
+  "typography": {
+    "fonts": {
+      "headings": "Outfit, sans-serif",
+      "body": "IBM Plex Sans, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "scale": {
+      "h1_hero": "text-5xl sm:text-6xl tracking-tighter font-black uppercase",
+      "h2_section": "text-3xl sm:text-4xl tracking-tight font-bold",
+      "h3_article_title": "text-2xl sm:text-3xl tracking-tight font-semibold",
+      "h4_widget": "text-lg sm:text-xl font-medium",
+      "body": "text-base leading-relaxed",
+      "body_sm": "text-sm leading-relaxed",
+      "overline": "text-xs tracking-[0.2em] uppercase font-bold text-gray-500"
+    },
+    "rules": {
+      "headings": "Use extreme weight contrast (Black vs Light). Never use 'Inter' for headings. Never center headings unless inside a specific asymmetrical bento block.",
+      "body": "Optimize for long-form reading. Max width for article bodies should be 'max-w-prose' (approx 65ch) to maintain readability.",
+      "hierarchy_gap": "Ensure the jump between heading and subheading does not exceed 2 Tailwind steps."
+    }
+  },
+  "colors": {
+    "backgrounds": {
+      "base": "#FDFDFD",
+      "surface": "#F4F4F5",
+      "surface_alt": "#FAFAFA",
+      "glass": "bg-white/80 backdrop-blur-2xl backdrop-saturate-150"
+    },
+    "text": {
+      "primary": "#050505",
+      "secondary": "#52525B",
+      "tertiary": "#A1A1AA"
+    },
+    "brand_accent": {
+      "primary": "#002FA7",
+      "primary_hover": "#002280",
+      "primary_foreground": "#FFFFFF"
+    },
+    "states": {
+      "border": "#E4E4E7",
+      "border_focus": "#002FA7",
+      "error": "#E11D48",
+      "success": "#16A34A"
+    },
+    "rules": {
+      "tinted_grey": "All greys are slightly tinted (zinc/slate scale in Tailwind) to avoid dead colors.",
+      "contrast": "Maintain 4.5:1 ratio for body text, 3:1 for large text and interactive elements. Always set explicit hover colors."
+    }
+  },
+  "spacing_and_layout": {
+    "generous_spacing": "Use 2-3x more spacing than typical templates. Sections should have 'py-24' or 'py-32'.",
+    "grids": {
+      "homepage": "Bento 'Tetris' Grid Mode A. Asymmetrical layout. Base grid 'grid-cols-1 md:grid-cols-12 gap-8'. Ensure empty negative space blocks to let content breathe.",
+      "dashboard": "Control Room Grid Mode B. Dense, data-heavy, strict hierarchy. 'grid-cols-1 md:grid-cols-4 gap-6'."
+    },
+    "alignment": "Left-align by default for reading flows. Center only for explicit hero statements or balanced artistic blocks.",
+    "container_padding": "Containers with borders must use 'p-8' or 'p-12' internally."
+  },
+  "components_strategy": {
+    "buttons": "Sharp edges ('rounded-none' or max 'rounded-sm'). Solid high-contrast backgrounds. Hover state must lift ('-translate-y-0.5') and change background hue.",
+    "cards_and_articles": "Grid Borders style. Flat solid background, 1px subtle border ('border-border'), NO soft shadows by default. Use 'hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]' for interactive lifts.",
+    "forms_and_inputs": "Minimalist 'calm design'. Inputs should have sharp borders, generous padding ('p-4'). Focus rings must be high-contrast ('focus:ring-2 focus:ring-[#002FA7] focus:border-transparent').",
+    "editor": "Multimodal 'Calm' Editor. Hide complexity by default. Generous whitespace, clean typography, floating command palette (Cmd+K) pattern for AI tools.",
+    "navigation": "Crystal Glass style if sticky ('bg-white/70 backdrop-blur-xl border-b border-black/5'). Solid background if not sticky. Never transparent over images.",
+    "libraries_required": [
+      "lucide-react (Icons)",
+      "date-fns (Formatting)",
+      "react-hook-form (Forms)",
+      "zod (Validation)",
+      "framer-motion (Page transitions & micro-interactions)",
+      "sonner (Toast notifications)"
+    ]
+  },
+  "motion_and_interactions": {
+    "philosophy": "Sharp, intentional, and utilitarian. No bouncy or playful animations.",
+    "transitions": "Use specific properties: 'transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]'.",
+    "hover_states": "Images inside article cards should slightly zoom ('scale-105') while container stays fixed ('overflow-hidden').",
+    "loading": "Use skeletal loaders with sharp edges, not spinners, for article lists."
+  },
+  "accessibility_and_testing": {
+    "testing_ids": "CRITICAL: All interactive and key informational elements MUST include a 'data-testid' attribute (e.g., 'data-testid=\"login-submit-button\"', 'data-testid=\"article-card-{id}\"').",
+    "focus": "Visible focus states are mandatory for keyboard navigation.",
+    "contrast": "Ensure text over images has a gradient overlay ('bg-gradient-to-t from-black/60 to-transparent') to guarantee readability.",
+    "reduced_motion": "Wrap complex animations in '(prefers-reduced-motion: no-preference)' checks."
+  },
+  "media_and_images": {
+    "hero_and_landing": [
+      {
+        "url": "https://images.pexels.com/photos/21325139/pexels-photo-21325139.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "A clean and organized home office setup. Use for hero section background or main platform showcase."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1546800409-51b20e2a4433?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODh8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwZWRpdG9yaWFsJTIwZGVza3xlbnwwfHx8fDE3ODIyMjA4MDd8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Minimalist desk detail (pinecone/tea). Great for 'About' or 'Writing Environment' sections."
+      }
+    ],
+    "author_avatars": [
+      {
+        "url": "https://images.unsplash.com/photo-1506863530036-1efeddceb993",
+        "description": "Grayscale portrait of woman. Use for default admin or top author profile."
+      },
+      {
+        "url": "https://images.pexels.com/photos/35899959/pexels-photo-35899959.jpeg",
+        "description": "Elegant black and white portrait of a woman writing. Perfect for 'Featured Creator' section."
+      },
+      {
+        "url": "https://images.pexels.com/photos/30895370/pexels-photo-30895370.jpeg",
+        "description": "Stylish black and white portrait of a man. Use for comment section examples or guest authors."
+      }
+    ],
+    "post_covers_abstract": [
+      {
+        "url": "https://images.unsplash.com/photo-1531591022136-eb8b0da1e6d0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzV8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMGFyY2hpdGVjdHVyZXxlbnwwfHx8fDE3ODI2MzIwNjN8MA&ixlib=rb-4.1.0&q=85",
+        "description": "White and black abstract painting. Use as default blog cover for technology/AI topics."
+      },
+      {
+        "url": "https://images.pexels.com/photos/12696432/pexels-photo-12696432.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Abstract steel structure. Perfect cover for structural/business articles."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1567943183748-3a7542120c90?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzV8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGFyY2hpdGVjdHVyZXxlbnwwfHx8fDE3ODI2MzIwNjN8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Curved building with sky. Excellent for lifestyle or creative process articles."
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "NEVER use Inter, Roboto, or generic sans-serif fonts for headings. Stick to 'Outfit' for titles and 'IBM Plex Sans' for body text.",
+    "Implement a strict 'calm design' for the AI text editor: hide complex tools, rely on progressive disclosure, and ensure the canvas has generous whitespace.",
+    "When building grids, DO NOT use perfect symmetry everywhere. Create tension by making one block span 2 columns while others span 1.",
+    "Use Shadcn UI for the dashboard, forms, and functional modals, but strip away the default Vercel-look. Remove border-radius ('rounded-none') and heavy box-shadows to fit the Swiss Brutalist aesthetic.",
+    "Ensure 'data-testid' is attached to every single button, link, and form input.",
+    "When displaying AI generated summaries, house them in a distinctly styled block (e.g., solid #002FA7 background with white text, or a sharp 1px border block with a 'monospaced' label) to visually separate AI content from human content.",
+    "Use the exact image URLs provided in the media section. NO placeholders (like via.placeholder.com)."
+  ]
+}
