@@ -1,89 +1,76 @@
-from fastapi import FastAPI, APIRouter
-from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
 import os
-import logging
+import sys
+import subprocess
+import time
 from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict
-from typing import List
-import uuid
-from datetime import datetime, timezone
-
+from dotenv import load_dotenv
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
-
-# Create the main app without a prefix
-app = FastAPI()
-
-# Create a router with the /api prefix
-api_router = APIRouter(prefix="/api")
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blog_project.settings')
 
 
-# Define Models
-class StatusCheck(BaseModel):
-    model_config = ConfigDict(extra="ignore")  # Ignore MongoDB's _id field
-    
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+def ensure_pg_running():
+    try:
+        result = subprocess.run(['pg_isready', '-q'], capture_output=True, timeout=5)
+        if result.returncode != 0:
+            subprocess.run(['service', 'postgresql', 'start'], capture_output=True, timeout=15)
+            for _ in range(15):
+                time.sleep(1)
+                r = subprocess.run(['pg_isready', '-q'], capture_output=True, timeout=5)
+                if r.returncode == 0:
+                    return
+    except Exception as e:
+        print(f"PG startup: {e}", flush=True)
 
-class StatusCheckCreate(BaseModel):
-    client_name: str
 
-# Add your routes to the router instead of directly to app
-@api_router.get("/")
-async def root():
-    return {"message": "Hello World"}
+def run_django_setup():
+    """Run migrations and admin seeding via subprocess (avoids async context issues)."""
+    env = os.environ.copy()
+    manage = str(ROOT_DIR / 'manage.py')
 
-@api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
-    status_dict = input.model_dump()
-    status_obj = StatusCheck(**status_dict)
-    
-    # Convert to dict and serialize datetime to ISO string for MongoDB
-    doc = status_obj.model_dump()
-    doc['timestamp'] = doc['timestamp'].isoformat()
-    
-    _ = await db.status_checks.insert_one(doc)
-    return status_obj
+    # Create migrations if they don't exist
+    subprocess.run(
+        [sys.executable, manage, 'makemigrations', '--no-input'],
+        cwd=str(ROOT_DIR), capture_output=True, text=True, env=env
+    )
 
-@api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    # Exclude MongoDB's _id field from the query results
-    status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
-    
-    # Convert ISO string timestamps back to datetime objects
-    for check in status_checks:
-        if isinstance(check['timestamp'], str):
-            check['timestamp'] = datetime.fromisoformat(check['timestamp'])
-    
-    return status_checks
+    # Apply migrations
+    r = subprocess.run(
+        [sys.executable, manage, 'migrate', '--no-input'],
+        cwd=str(ROOT_DIR), capture_output=True, text=True, env=env
+    )
+    if r.stdout:
+        print(r.stdout, flush=True)
+    if r.returncode != 0:
+        print(f"Migrate error: {r.stderr[:400]}", flush=True)
+        return
 
-# Include the router in the main app
-app.include_router(api_router)
+    # Create admin user
+    admin_email = env.get('ADMIN_EMAIL', 'admin@blog.com')
+    admin_password = env.get('ADMIN_PASSWORD', 'admin123')
+    script = f"""
+import sys; sys.path.insert(0, '{ROOT_DIR}')
+import os; os.environ['DJANGO_SETTINGS_MODULE'] = 'blog_project.settings'
+import django; django.setup()
+from django.contrib.auth import get_user_model
+User = get_user_model()
+if not User.objects.filter(email='{admin_email}').exists():
+    User.objects.create_superuser(username='admin', email='{admin_email}', password='{admin_password}', role='admin')
+    print('Admin created')
+"""
+    r2 = subprocess.run([sys.executable, '-c', script],
+                        cwd=str(ROOT_DIR), capture_output=True, text=True, env=env)
+    if r2.stdout:
+        print(r2.stdout, flush=True)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+ensure_pg_running()
+run_django_setup()
 
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
+import django
+django.setup()
+
+from django.core.asgi import get_asgi_application
+app = get_asgi_application()
