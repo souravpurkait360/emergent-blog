@@ -27,46 +27,26 @@ A full-stack blog application built with Django DRF (backend), React (frontend),
 9. Pagination for post listings
 10. Admin dashboard
 
-## What's Been Implemented (June 28, 2026)
+## What's Been Implemented (June 28, 2026) — v2 Architectural Refactor
 
-### Backend (Django DRF)
-- Custom User model with roles (admin/author/reader)
-- JWT authentication with djangorestframework-simplejwt
-- Post model with slug, cover image, categories, tags, ai_summary
-- Comment model with author/post relationships
-- Category and Tag models with auto-slug generation
-- AI endpoints: /api/ai/assist/ and /api/ai/summarize/
-- Media file serving at /api/media/
-- Pagination (9 posts per page)
-- Admin Django panel at /api/admin/
-- Automatic migrations on startup via subprocess
+### Backend (4-layer Architecture)
+- Refactored to strict API View → Service → Repository → Serializer layers
+- Apps: core, accounts, posts, ai (each with their own API/service/repository/serializer dirs)
+- Cookie-based JWT authentication (CookieJWTAuthentication) — httpOnly cookies, no localStorage
+- Login/register set httpOnly cookies; /auth/me/ restores session on init
+- Ruff linting config in pyproject.toml (E, W, F, I, B, N, UP, SIM rules enforced)
 
-### Frontend (React)
-- Swiss & High-Contrast design (Outfit + IBM Plex Sans fonts)
-- Hero section with search
-- Bento-style asymmetric post grid
-- Category filter buttons
-- Rich text editor (contenteditable with toolbar)
-- Post detail with AI summary block
-- Comment section with add/delete
-- Auth page (login/register tabs)
-- Profile page with stats and posts list
-- Admin dashboard (posts/users/categories tabs)
-- Framer Motion animations
-
-### Sample Data
-- 4 categories: Technology, Design, Writing, Business
-- 6 tags: python, django, react, css, ai, productivity
-- 3 sample posts from admin user
-
-## Admin Credentials
-- Email: admin@blog.com
-- Password: admin123
+### Frontend (Zustand + HTTPOnly Cookies)
+- Migrated from AuthContext/localStorage to Zustand useAuthStore + httpOnly cookies
+- Auth.js, PostDetail.js, Profile.js, CommentSection.js all use useAuthStore
+- CSS compilation fixed: @import moved before @tailwind directives; @layer removed from App.css
+- Tailwind design tokens: canvas, surface, ink, accent, edge, wash configured
 
 ## P0 Backlog (Critical)
 - [ ] Password reset functionality
 - [ ] User avatar upload
 - [ ] Post read time estimate
+- [ ] Ruff: run ruff check . --fix and commit clean backend
 
 ## P1 Backlog (Important)
 - [ ] Post bookmarking/favorites
@@ -82,10 +62,3 @@ A full-stack blog application built with Django DRF (backend), React (frontend),
 - [ ] Newsletter subscription
 - [ ] Analytics dashboard for authors
 - [ ] Multiple image attachments per post
-
-## Next Tasks
-1. Add post read time calculation
-2. Add SEO meta tags
-3. Implement password reset via email
-4. Add post bookmarking feature
-5. Add related posts to post detail page
