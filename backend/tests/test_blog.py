@@ -3,20 +3,28 @@ import pytest
 import requests
 import os
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', '').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL') or open('/app/frontend/.env').read().split('REACT_APP_BACKEND_URL=')[1].split('\n')[0].strip()
+BASE_URL = BASE_URL.rstrip('/')
 
 
 @pytest.fixture(scope="module")
-def admin_token():
-    resp = requests.post(f"{BASE_URL}/api/auth/token/", json={"email": "admin@blog.com", "password": "admin123"})
+def admin_session():
+    """Session with admin httpOnly cookies set"""
+    session = requests.Session()
+    resp = session.post(f"{BASE_URL}/api/auth/token/", json={"email": "admin@blog.com", "password": "admin123"})
     if resp.status_code == 200:
-        return resp.json().get("access")
+        return session
     pytest.skip(f"Admin login failed: {resp.status_code} {resp.text}")
 
 
+# Keep for backward compat
 @pytest.fixture(scope="module")
-def admin_headers(admin_token):
-    return {"Authorization": f"Bearer {admin_token}", "Content-Type": "application/json"}
+def admin_token(admin_session):
+    return "cookie-based"
+
+@pytest.fixture(scope="module")
+def admin_headers(admin_session):
+    return admin_session
 
 
 # ---- Auth tests ----
@@ -25,8 +33,8 @@ def test_admin_login():
     resp = requests.post(f"{BASE_URL}/api/auth/token/", json={"email": "admin@blog.com", "password": "admin123"})
     assert resp.status_code == 200
     data = resp.json()
-    assert "access" in data
-    assert "refresh" in data
+    assert "user" in data
+    assert data["user"]["email"] == "admin@blog.com"
 
 
 def test_register_new_user():
@@ -45,8 +53,8 @@ def test_login_testuser():
     assert resp.status_code == 200
 
 
-def test_me_endpoint(admin_headers):
-    resp = requests.get(f"{BASE_URL}/api/auth/me/", headers=admin_headers)
+def test_me_endpoint(admin_session):
+    resp = admin_session.get(f"{BASE_URL}/api/auth/me/")
     assert resp.status_code == 200
     data = resp.json()
     assert data["email"] == "admin@blog.com"
@@ -75,39 +83,39 @@ def test_get_post_detail():
     assert "ai_summary" in data
 
 
-def test_create_post(admin_headers):
-    resp = requests.post(f"{BASE_URL}/api/posts/", json={
+def test_create_post(admin_session):
+    resp = admin_session.post(f"{BASE_URL}/api/posts/", json={
         "title": "TEST_Blog Post Automation",
         "content": "This is a test post created by automation.",
         "status": "published"
-    }, headers=admin_headers)
+    })
     assert resp.status_code == 201, f"{resp.status_code} {resp.text}"
     data = resp.json()
     assert "slug" in data
     return data["slug"]
 
 
-def test_create_and_update_post(admin_headers):
+def test_create_and_update_post(admin_session):
     # Create
-    resp = requests.post(f"{BASE_URL}/api/posts/", json={
+    resp = admin_session.post(f"{BASE_URL}/api/posts/", json={
         "title": "TEST_Update Post",
         "content": "Original content.",
         "status": "draft"
-    }, headers=admin_headers)
+    })
     assert resp.status_code == 201
     slug = resp.json()["slug"]
 
-    # Update
-    upd = requests.put(f"{BASE_URL}/api/posts/{slug}/", json={
+    # Update (PATCH not PUT)
+    upd = admin_session.patch(f"{BASE_URL}/api/posts/{slug}/", json={
         "title": "TEST_Update Post",
         "content": "Updated content.",
         "status": "published"
-    }, headers=admin_headers)
+    })
     assert upd.status_code == 200
     assert upd.json()["content"] == "Updated content."
 
     # Delete
-    del_resp = requests.delete(f"{BASE_URL}/api/posts/{slug}/", headers=admin_headers)
+    del_resp = admin_session.delete(f"{BASE_URL}/api/posts/{slug}/")
     assert del_resp.status_code == 204
 
 
@@ -131,23 +139,23 @@ def test_list_tags():
 
 # ---- Comments ----
 
-def test_create_and_delete_comment(admin_headers):
+def test_create_and_delete_comment(admin_session):
     slug = "how-ai-is-transforming-content-creation"
-    resp = requests.post(f"{BASE_URL}/api/posts/{slug}/comments/", json={
+    resp = admin_session.post(f"{BASE_URL}/api/posts/{slug}/comments/", json={
         "content": "TEST_ Great post!"
-    }, headers=admin_headers)
+    })
     assert resp.status_code == 201, f"{resp.status_code} {resp.text}"
     comment_id = resp.json()["id"]
 
     # Delete comment
-    del_resp = requests.delete(f"{BASE_URL}/api/comments/{comment_id}/", headers=admin_headers)
+    del_resp = admin_session.delete(f"{BASE_URL}/api/comments/{comment_id}/")
     assert del_resp.status_code in [200, 204], f"{del_resp.status_code} {del_resp.text}"
 
 
 # ---- Admin users list ----
 
-def test_admin_users_list(admin_headers):
-    resp = requests.get(f"{BASE_URL}/api/auth/users/", headers=admin_headers)
+def test_admin_users_list(admin_session):
+    resp = admin_session.get(f"{BASE_URL}/api/auth/users/")
     assert resp.status_code == 200
 
 
@@ -162,6 +170,6 @@ def test_search_posts():
 
 # ---- My posts ----
 
-def test_my_posts(admin_headers):
-    resp = requests.get(f"{BASE_URL}/api/posts/my/", headers=admin_headers)
+def test_my_posts(admin_session):
+    resp = admin_session.get(f"{BASE_URL}/api/posts/my/")
     assert resp.status_code == 200

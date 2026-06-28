@@ -1,27 +1,27 @@
 /* Rich text editor – applied to contenteditable divs in PostEditor */
 .rich-editor {
-  font-family: theme('fontFamily.body');
+  font-family: 'IBM Plex Sans', sans-serif;
   font-size: 1.125rem;
   line-height: 1.75;
-  color: theme('colors.ink.DEFAULT');
+  color: #050505;
   outline: none;
   min-height: 400px;
 }
-.rich-editor h1 { font-family: theme('fontFamily.display'); font-size: 2rem; font-weight: 800; margin: 1.5rem 0 0.75rem; }
-.rich-editor h2 { font-family: theme('fontFamily.display'); font-size: 1.5rem; font-weight: 700; margin: 1.25rem 0 0.5rem; }
-.rich-editor h3 { font-family: theme('fontFamily.display'); font-size: 1.25rem; font-weight: 600; margin: 1rem 0 0.5rem; }
+.rich-editor h1 { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; margin: 1.5rem 0 0.75rem; }
+.rich-editor h2 { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 700; margin: 1.25rem 0 0.5rem; }
+.rich-editor h3 { font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 600; margin: 1rem 0 0.5rem; }
 .rich-editor p  { margin-bottom: 1rem; }
 .rich-editor strong { font-weight: 700; }
 .rich-editor em { font-style: italic; }
 .rich-editor ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
 .rich-editor ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
-.rich-editor code { font-family: theme('fontFamily.code'); background: theme('colors.wash'); padding: 0.125rem 0.375rem; font-size: 0.875rem; }
-.rich-editor blockquote { border-left: 3px solid theme('colors.accent.DEFAULT'); padding-left: 1rem; color: theme('colors.ink.muted'); margin: 1rem 0; }
-.rich-editor a { color: theme('colors.accent.DEFAULT'); text-decoration: underline; }
+.rich-editor code { font-family: 'JetBrains Mono', monospace; background: #F4F4F5; padding: 0.125rem 0.375rem; font-size: 0.875rem; }
+.rich-editor blockquote { border-left: 3px solid #002FA7; padding-left: 1rem; color: #52525B; margin: 1rem 0; }
+.rich-editor a { color: #002FA7; text-decoration: underline; }
 
 /* Published post content display */
-.post-content { font-family: theme('fontFamily.body'); font-size: 1.125rem; line-height: 1.75; color: theme('colors.ink.DEFAULT'); }
-.post-content h1, .post-content h2, .post-content h3, .post-content h4 { font-family: theme('fontFamily.display'); font-weight: 700; margin: 1.5rem 0 0.75rem; }
+.post-content { font-family: 'IBM Plex Sans', sans-serif; font-size: 1.125rem; line-height: 1.75; color: #050505; }
+.post-content h1, .post-content h2, .post-content h3, .post-content h4 { font-family: 'Outfit', sans-serif; font-weight: 700; margin: 1.5rem 0 0.75rem; }
 .post-content h1 { font-size: 2rem; }
 .post-content h2 { font-size: 1.5rem; }
 .post-content h3 { font-size: 1.25rem; }
@@ -30,12 +30,12 @@
 .post-content ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
 .post-content ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
 .post-content li { margin-bottom: 0.25rem; }
-.post-content code { font-family: theme('fontFamily.code'); background: theme('colors.wash'); padding: 0.125rem 0.375rem; font-size: 0.875rem; }
-.post-content pre { background: theme('colors.ink.DEFAULT'); color: theme('colors.canvas'); padding: 1.5rem; overflow-x: auto; margin: 1.5rem 0; }
+.post-content code { font-family: 'JetBrains Mono', monospace; background: #F4F4F5; padding: 0.125rem 0.375rem; font-size: 0.875rem; }
+.post-content pre { background: #050505; color: #FDFDFD; padding: 1.5rem; overflow-x: auto; margin: 1.5rem 0; }
 .post-content pre code { background: transparent; padding: 0; color: inherit; }
-.post-content blockquote { border-left: 3px solid theme('colors.accent.DEFAULT'); padding-left: 1rem; color: theme('colors.ink.muted'); margin: 1.5rem 0; font-style: italic; }
-.post-content a { color: theme('colors.accent.DEFAULT'); text-decoration: underline; }
+.post-content blockquote { border-left: 3px solid #002FA7; padding-left: 1rem; color: #52525B; margin: 1.5rem 0; font-style: italic; }
+.post-content a { color: #002FA7; text-decoration: underline; }
 
 /* Skeleton loading animation */
-.skeleton { animation: skeleton-pulse 1.5s infinite; background: linear-gradient(90deg, theme('colors.wash') 25%, theme('colors.edge') 50%, theme('colors.wash') 75%); background-size: 200% 100%; }
+.skeleton { animation: skeleton-pulse 1.5s infinite; background: linear-gradient(90deg, #F4F4F5 25%, #E4E4E7 50%, #F4F4F5 75%); background-size: 200% 100%; }
 @keyframes skeleton-pulse { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }

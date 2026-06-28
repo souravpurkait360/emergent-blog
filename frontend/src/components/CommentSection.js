@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import useAuthStore from '../store/authStore';
 import { format } from 'date-fns';
 import { Trash2, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import client from '../api/client';
 
 export default function CommentSection({ postSlug, comments: initial, onUpdate }) {
-  const { user } = useAuth();
+  const user = useAuthStore((state) => state.user);
   const [comments, setComments] = useState(initial || []);
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);

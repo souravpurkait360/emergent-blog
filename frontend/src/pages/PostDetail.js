@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { Eye, Edit, Trash2, ArrowLeft, Tag } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
-import { useAuth } from '../contexts/AuthContext';
+import useAuthStore from '../store/authStore';
 import CommentSection from '../components/CommentSection';
 import client from '../api/client';
 
@@ -12,7 +12,7 @@ const DEFAULT_COVER = 'https://images.unsplash.com/photo-1531591022136-eb8b0da1e
 
 export default function PostDetail() {
   const { slug } = useParams();
-  const { user } = useAuth();
+  const user = useAuthStore((state) => state.user);
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import useAuthStore from '../store/authStore';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { Eye, EyeOff } from 'lucide-react';
@@ -11,7 +11,8 @@ export default function Auth() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { login, register } = useAuth();
+  const login = useAuthStore((state) => state.login);
+  const register = useAuthStore((state) => state.register);
   const navigate = useNavigate();
 
   const update = (k, v) => setForm(prev => ({ ...prev, [k]: v }));

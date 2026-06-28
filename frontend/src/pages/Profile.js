@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { Edit, Eye, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useAuth } from '../contexts/AuthContext';
+import useAuthStore from '../store/authStore';
 import client from '../api/client';
 
 export default function Profile() {
-  const { user } = useAuth();
+  const user = useAuthStore((state) => state.user);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
