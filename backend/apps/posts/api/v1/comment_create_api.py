@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class CommentCreateAPIView(APIView):
-    """POST /api/posts/<slug>/comments/ – add a comment to a post."""
+    """POST /api/posts/<slug>/comments/ - add a comment to a post."""
 
     permission_classes = [permissions.IsAuthenticated]
 

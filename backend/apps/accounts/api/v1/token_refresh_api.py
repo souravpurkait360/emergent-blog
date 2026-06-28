@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class TokenRefreshAPIView(APIView):
-    """POST /api/auth/token/refresh/ – issue a new access token using the refresh cookie."""
+    """POST /api/auth/token/refresh/ - issue a new access token using the refresh cookie."""
 
     permission_classes = [permissions.AllowAny]
 

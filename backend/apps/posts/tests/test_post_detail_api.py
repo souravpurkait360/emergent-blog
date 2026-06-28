@@ -15,12 +15,8 @@ class PostDetailAPIViewTest(TestCase):
 
     def setUp(self) -> None:
         self.client = APIClient()
-        self.author = User.objects.create_user(
-            email="author2@example.com", username="author2", password="pass123"
-        )
-        self.other_user = User.objects.create_user(
-            email="other@example.com", username="other", password="pass123"
-        )
+        self.author = User.objects.create_user(email="author2@example.com", username="author2", password="pass123")
+        self.other_user = User.objects.create_user(email="other@example.com", username="other", password="pass123")
         self.post = Post.objects.create(
             title="Detail Test Post", content="Some content", author=self.author, status="published"
         )

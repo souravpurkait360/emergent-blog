@@ -1,4 +1,3 @@
-
 from apps.core.exceptions import NotFoundException
 from apps.posts.models import Comment
 

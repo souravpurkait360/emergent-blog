@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class CommentDeleteAPIView(APIView):
-    """DELETE /api/comments/<pk>/ – remove a comment (own or admin)."""
+    """DELETE /api/comments/<pk>/ - remove a comment (own or admin)."""
 
     permission_classes = [permissions.IsAuthenticated]
 

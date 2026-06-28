@@ -27,7 +27,7 @@ class LoginAPIViewTest(TestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("user", response.data)
-        self.assertNotIn("access", response.data)   # Token moved to cookie
+        self.assertNotIn("access", response.data)  # Token moved to cookie
         self.assertNotIn("refresh", response.data)  # Token moved to cookie
 
     def test_login_sets_httponly_cookies(self) -> None:

@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class RegisterAPIView(APIView):
-    """POST /api/auth/register/ – create a new user account."""
+    """POST /api/auth/register/ - create a new user account."""
 
     permission_classes = [permissions.AllowAny]
 

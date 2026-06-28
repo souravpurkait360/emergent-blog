@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class AISummarizeAPIView(APIView):
-    """POST /api/ai/summarize/ – generate an AI summary for a blog post."""
+    """POST /api/ai/summarize/ - generate an AI summary for a blog post."""
 
     permission_classes = [permissions.IsAuthenticated]
 

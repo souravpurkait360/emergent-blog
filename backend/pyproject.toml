@@ -6,8 +6,6 @@ build-backend = "setuptools.backends.legacy:build"
 line-length = 120
 target-version = "py311"
 src = ["apps", "blog_project"]
-# Exclude legacy root-level dirs (pre-refactor artefacts, not in INSTALLED_APPS)
-exclude = ["accounts", "ai", "posts", "serializers.py"]
 
 [tool.ruff.lint]
 select = [

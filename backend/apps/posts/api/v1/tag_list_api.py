@@ -8,7 +8,7 @@ from apps.posts.services.category_service import TagService
 
 
 class TagListAPIView(APIView):
-    """GET /api/tags/ – list all tags."""
+    """GET /api/tags/ - list all tags."""
 
     permission_classes = [permissions.AllowAny]
 

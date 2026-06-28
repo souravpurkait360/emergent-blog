@@ -11,7 +11,7 @@ BACKEND_URL = os.environ.get("FRONTEND_URL", "")
 
 
 class PostListSerializer(serializers.ModelSerializer):
-    """Output DTO for post listings – no full content, no comments."""
+    """Output DTO for post listings - no full content, no comments."""
 
     author = UserSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
@@ -22,8 +22,18 @@ class PostListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = [
-            "id", "title", "slug", "ai_summary", "cover_image_url",
-            "author", "category", "tags", "status", "views", "created_at", "comment_count",
+            "id",
+            "title",
+            "slug",
+            "ai_summary",
+            "cover_image_url",
+            "author",
+            "category",
+            "tags",
+            "status",
+            "views",
+            "created_at",
+            "comment_count",
         ]
 
     def get_comment_count(self, post_obj) -> int:
@@ -39,12 +49,12 @@ class PostListSerializer(serializers.ModelSerializer):
 
 
 class PostDetailSerializer(PostListSerializer):
-    """Output DTO for the post detail page – includes content and comments."""
+    """Output DTO for the post detail page - includes content and comments."""
 
     comments = CommentSerializer(many=True, read_only=True)
 
     class Meta(PostListSerializer.Meta):
-        fields = PostListSerializer.Meta.fields + ["content", "ai_summary", "comments", "updated_at"]
+        fields = [*PostListSerializer.Meta.fields, "content", "ai_summary", "comments", "updated_at"]
 
 
 class PostCreateSerializer(serializers.Serializer):

@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class CategoryListAPIView(APIView):
-    """GET /api/categories/ – list all categories. POST – create (admin only)."""
+    """GET /api/categories/ - list all categories. POST - create (admin only)."""
 
     def get_permissions(self):
         if self.request.method == "GET":

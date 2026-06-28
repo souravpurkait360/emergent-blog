@@ -16,9 +16,7 @@ class PostListAPIViewTest(TestCase):
     def setUp(self) -> None:
         self.client = APIClient()
         self.list_url = reverse("posts-list")
-        self.user = User.objects.create_user(
-            email="author@example.com", username="author", password="pass123"
-        )
+        self.user = User.objects.create_user(email="author@example.com", username="author", password="pass123")
         self.category = Category.objects.create(name="Tech")
         self.post = Post.objects.create(
             title="Test Post",

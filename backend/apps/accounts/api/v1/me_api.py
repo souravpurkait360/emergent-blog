@@ -10,7 +10,7 @@ from apps.core.exceptions import BlogAPIException
 
 
 class MeAPIView(APIView):
-    """GET /api/auth/me/ – retrieve current user. PATCH – update profile."""
+    """GET /api/auth/me/ - retrieve current user. PATCH - update profile."""
 
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = [JSONParser, MultiPartParser, FormParser]

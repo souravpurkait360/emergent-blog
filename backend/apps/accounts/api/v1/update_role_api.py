@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class UpdateUserRoleAPIView(APIView):
-    """PATCH /api/auth/users/<pk>/role/ – change a user's role (admin only)."""
+    """PATCH /api/auth/users/<pk>/role/ - change a user's role (admin only)."""
 
     permission_classes = [permissions.IsAdminUser]
 

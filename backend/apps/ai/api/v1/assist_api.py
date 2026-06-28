@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class AIAssistAPIView(APIView):
-    """POST /api/ai/assist/ – generate a writing continuation for a blog post."""
+    """POST /api/ai/assist/ - generate a writing continuation for a blog post."""
 
     permission_classes = [permissions.IsAuthenticated]
 

@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class LoginAPIView(TokenObtainPairView):
-    """POST /api/auth/token/ – authenticate and receive httpOnly auth cookies."""
+    """POST /api/auth/token/ - authenticate and receive httpOnly auth cookies."""
 
     permission_classes = [permissions.AllowAny]
     serializer_class = CustomTokenObtainPairSerializer

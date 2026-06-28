@@ -14,12 +14,24 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "blog_project.settings")
 
 def ensure_pg_running():
     try:
-        result = subprocess.run(["pg_isready", "-q"], capture_output=True, timeout=5)
+        result = subprocess.run(
+            ["pg_ctlcluster", "15", "main", "status"],
+            capture_output=True,
+            timeout=5,
+        )
         if result.returncode != 0:
-            subprocess.run(["service", "postgresql", "start"], capture_output=True, timeout=15)
+            subprocess.run(
+                ["pg_ctlcluster", "15", "main", "start"],
+                capture_output=True,
+                timeout=30,
+            )
             for _ in range(15):
                 time.sleep(1)
-                r = subprocess.run(["pg_isready", "-q"], capture_output=True, timeout=5)
+                r = subprocess.run(
+                    ["pg_ctlcluster", "15", "main", "status"],
+                    capture_output=True,
+                    timeout=5,
+                )
                 if r.returncode == 0:
                     return
     except Exception as e:

@@ -14,9 +14,7 @@ class CommentAPITest(TestCase):
     """Integration tests for comment create and delete endpoints."""
 
     def setUp(self) -> None:
-        self.user = User.objects.create_user(
-            email="commenter@example.com", username="commenter", password="pass123"
-        )
+        self.user = User.objects.create_user(email="commenter@example.com", username="commenter", password="pass123")
         self.post = Post.objects.create(
             title="Comment Target Post",
             content="Some content",

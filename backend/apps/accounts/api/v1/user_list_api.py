@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class UserListAPIView(APIView):
-    """GET /api/auth/users/ – list all users (admin only)."""
+    """GET /api/auth/users/ - list all users (admin only)."""
 
     permission_classes = [permissions.IsAdminUser]
 

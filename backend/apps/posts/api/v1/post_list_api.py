@@ -15,7 +15,7 @@ PAGE_SIZE = 9
 
 
 class PostListAPIView(APIView):
-    """GET /api/posts/ – paginated feed. POST – create a new post."""
+    """GET /api/posts/ - paginated feed. POST - create a new post."""
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
@@ -32,10 +32,12 @@ class PostListAPIView(APIView):
         end = start + PAGE_SIZE
         posts = queryset[start:end]
 
-        return Response({
-            "count": total_count,
-            "results": PostListSerializer(posts, many=True, context={"request": request}).data,
-        })
+        return Response(
+            {
+                "count": total_count,
+                "results": PostListSerializer(posts, many=True, context={"request": request}).data,
+            }
+        )
 
     def post(self, request: Request) -> Response:
         try:

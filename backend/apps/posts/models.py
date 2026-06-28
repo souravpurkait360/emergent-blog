@@ -53,9 +53,7 @@ class Post(models.Model):
     ai_summary = models.TextField(blank=True)
     cover_image = models.ImageField(upload_to="posts/", blank=True, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
-    category = models.ForeignKey(
-        Category, on_delete=models.SET_NULL, null=True, blank=True, related_name="posts"
-    )
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name="posts")
     tags = models.ManyToManyField(Tag, blank=True)
     status = models.CharField(
         max_length=20,

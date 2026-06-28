@@ -23,6 +23,7 @@ class AIService:
 
     def _run_llm(self, session_id: str, system_message: str, user_text: str) -> str:
         """Execute a streaming LLM call and return the full response text."""
+
         async def _execute():
             chat = LlmChat(
                 api_key=LLM_API_KEY,

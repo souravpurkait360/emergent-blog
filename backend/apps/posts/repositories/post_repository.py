@@ -71,7 +71,7 @@ class PostRepository:
         Post.objects.filter(pk=post_id).update(views=F("views") + 1)
 
     def set_tags(self, post: Post, tag_names: list[str]) -> None:
-        """Bulk-create and set tags on a post – avoids N+1 queries."""
+        """Bulk-create and set tags on a post - avoids N+1 queries."""
         tags = []
         for tag_name in tag_names:
             clean_name = tag_name.strip()

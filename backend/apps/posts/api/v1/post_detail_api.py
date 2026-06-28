@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class PostDetailAPIView(APIView):
-    """GET/PATCH/DELETE /api/posts/<slug>/ – retrieve, update, or delete a post."""
+    """GET/PATCH/DELETE /api/posts/<slug>/ - retrieve, update, or delete a post."""
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     parser_classes = [MultiPartParser, FormParser, JSONParser]

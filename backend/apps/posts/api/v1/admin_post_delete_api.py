@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class AdminPostDeleteAPIView(APIView):
-    """DELETE /api/posts/admin/<pk>/ – hard delete any post (admin only)."""
+    """DELETE /api/posts/admin/<pk>/ - hard delete any post (admin only)."""
 
     permission_classes = [permissions.IsAdminUser]
 

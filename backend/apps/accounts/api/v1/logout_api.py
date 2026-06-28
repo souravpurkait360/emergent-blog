@@ -7,7 +7,7 @@ from apps.core.cookies import clear_auth_cookies
 
 
 class LogoutAPIView(APIView):
-    """POST /api/auth/logout/ – clear auth cookies to invalidate the session."""
+    """POST /api/auth/logout/ - clear auth cookies to invalidate the session."""
 
     permission_classes = [permissions.IsAuthenticated]
 

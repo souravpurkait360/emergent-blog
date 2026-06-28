@@ -5,7 +5,7 @@ User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """Read serializer – output DTO for user data."""
+    """Read serializer - output DTO for user data."""
 
     avatar_url = serializers.SerializerMethodField()
 
