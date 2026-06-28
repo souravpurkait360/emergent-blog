@@ -1,12 +1,18 @@
-from rest_framework import generics, permissions, status, filters
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
-from .models import Category, Tag, Post, Comment
-from .serializers import (CategorySerializer, TagSerializer, PostListSerializer,
-                           PostDetailSerializer, PostCreateSerializer, CommentSerializer)
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, generics, permissions, status
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
+from rest_framework.response import Response
+
+from .models import Category, Comment, Post, Tag
+from .serializers import (
+    CategorySerializer,
+    CommentSerializer,
+    PostCreateSerializer,
+    PostDetailSerializer,
+    PostListSerializer,
+    TagSerializer,
+)
 
 
 class IsAuthorOrAdmin(permissions.BasePermission):

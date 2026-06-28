@@ -3,6 +3,7 @@
 Reads JWT from httpOnly cookies first, then falls back to Authorization header.
 This ensures sensitive tokens are never exposed to JavaScript (XSS protection).
 """
+
 import logging
 
 from rest_framework_simplejwt.authentication import JWTAuthentication

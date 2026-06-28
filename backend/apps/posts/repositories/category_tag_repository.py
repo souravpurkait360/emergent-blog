@@ -25,8 +25,8 @@ class CategoryRepository:
     def get_by_slug(self, slug: str) -> Category:
         try:
             return Category.objects.get(slug=slug)
-        except Category.DoesNotExist:
-            raise NotFoundException(f"Category '{slug}' not found")
+        except Category.DoesNotExist as exc:
+            raise NotFoundException(f"Category '{slug}' not found") from exc
 
 
 class TagRepository:

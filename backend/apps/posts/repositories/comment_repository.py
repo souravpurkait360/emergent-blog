@@ -1,4 +1,3 @@
-from django.db.models import QuerySet
 
 from apps.core.exceptions import NotFoundException
 from apps.posts.models import Comment
@@ -21,8 +20,8 @@ class CommentRepository:
     def get_by_id(self, comment_id: int) -> Comment:
         try:
             return Comment.objects.select_related("author", "post").get(pk=comment_id)
-        except Comment.DoesNotExist:
-            raise NotFoundException(f"Comment {comment_id} not found")
+        except Comment.DoesNotExist as exc:
+            raise NotFoundException(f"Comment {comment_id} not found") from exc
 
     def delete(self, comment: Comment) -> None:
         comment.delete()

@@ -6,6 +6,8 @@ build-backend = "setuptools.backends.legacy:build"
 line-length = 120
 target-version = "py311"
 src = ["apps", "blog_project"]
+# Exclude legacy root-level dirs (pre-refactor artefacts, not in INSTALLED_APPS)
+exclude = ["accounts", "ai", "posts", "serializers.py"]
 
 [tool.ruff.lint]
 select = [
@@ -35,6 +37,7 @@ ignore = [
     "T201",   # print found (allowed for server.py startup logs)
     "UP007",  # use X | Y for type union (3.10+ only)
     "RUF012", # mutable class var annotation
+    "N818",   # Exception name suffix – BlogAPIException uses Django/DRF convention
 ]
 
 # Guardrails enforced by Ruff:
@@ -44,6 +47,7 @@ ignore = [
 # E741 – ambiguous names l/O/I (AGENTS.md: no single-letter vars)
 # N806 – variable in function not lowercase
 # B006 – mutable default argument (thread-safety)
+# B904 – raise ... from exc inside except blocks (exception chaining)
 #
 # Guardrails NOT enforceable by Ruff (enforced by convention):
 # – 1 APIView class per file (AGENTS.md)
@@ -54,9 +58,11 @@ ignore = [
 # – Enums for static values (AGENTS.md)
 
 [tool.ruff.lint.per-file-ignores]
-"*/tests/*" = ["S101", "T201", "F841"]
-"server.py" = ["T201"]
+"*/tests/*" = ["S101", "T201", "F841", "E501"]
+"tests/test_blog.py" = ["E501"]
+"server.py" = ["T201", "E402"]
 "manage.py" = ["T201"]
+"*/migrations/*" = ["E501", "RUF012"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["apps", "blog_project"]

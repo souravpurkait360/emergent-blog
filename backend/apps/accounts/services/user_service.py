@@ -4,7 +4,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from apps.accounts.repositories.user_repository import UserRepository
 from apps.accounts.serializers.register_serializer import RegisterSerializer
 from apps.core.enums import UserRole
-from apps.core.exceptions import ConflictException, NotFoundException, ValidationException
+from apps.core.exceptions import ValidationException
 
 User = get_user_model()
 
@@ -56,8 +56,8 @@ class UserService:
         """Update the role of an existing user."""
         try:
             role_enum = UserRole(new_role)
-        except ValueError:
-            raise ValidationException(f"Invalid role '{new_role}'")
+        except ValueError as exc:
+            raise ValidationException(f"Invalid role '{new_role}'") from exc
         return self._user_repository.update_role(user_id, role_enum)
 
     def get_all_users(self):

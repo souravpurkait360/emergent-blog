@@ -3,7 +3,7 @@ import os
 from rest_framework import serializers
 
 from apps.accounts.serializers.user_serializer import UserSerializer
-from apps.posts.models import Category, Post, Tag
+from apps.posts.models import Post
 from apps.posts.serializers.category_tag_serializers import CategorySerializer, TagSerializer
 from apps.posts.serializers.comment_serializer import CommentSerializer
 

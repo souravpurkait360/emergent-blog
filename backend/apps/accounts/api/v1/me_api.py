@@ -1,4 +1,4 @@
-from rest_framework import permissions, status
+from rest_framework import permissions
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.request import Request
 from rest_framework.response import Response

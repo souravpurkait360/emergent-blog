@@ -1,10 +1,11 @@
 """Shared cookie utility helpers used across auth API views."""
+
 import os
 
 COOKIE_ACCESS_KEY = "access_token"
 COOKIE_REFRESH_KEY = "refresh_token"
-ACCESS_MAX_AGE = 86400       # 24 hours
-REFRESH_MAX_AGE = 604800     # 7 days
+ACCESS_MAX_AGE = 86400  # 24 hours
+REFRESH_MAX_AGE = 604800  # 7 days
 SECURE_COOKIES = os.environ.get("SECURE_COOKIES", "true").lower() == "true"
 
 

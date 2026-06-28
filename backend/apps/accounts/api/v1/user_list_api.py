@@ -1,13 +1,12 @@
 import logging
 
-from rest_framework import permissions, status
+from rest_framework import permissions
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.accounts.serializers.user_serializer import UserSerializer
 from apps.accounts.services.user_service import UserService
-from apps.core.exceptions import BlogAPIException
 
 logger = logging.getLogger(__name__)
 

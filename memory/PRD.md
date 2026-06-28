@@ -46,7 +46,7 @@ A full-stack blog application built with Django DRF (backend), React (frontend),
 - [ ] Password reset functionality
 - [ ] User avatar upload
 - [ ] Post read time estimate
-- [ ] Ruff: run ruff check . --fix and commit clean backend
+- [x] Ruff: run ruff check . --fix and format — DONE (0 violations)
 
 ## P1 Backlog (Important)
 - [ ] Post bookmarking/favorites

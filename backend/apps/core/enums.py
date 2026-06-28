@@ -2,6 +2,7 @@
 
 Using Enums ensures no hard-coded string literals throughout the codebase.
 """
+
 from enum import StrEnum
 
 

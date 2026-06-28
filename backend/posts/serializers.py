@@ -1,7 +1,9 @@
 import os
-from rest_framework import serializers
+
 from django.contrib.auth import get_user_model
-from .models import Category, Tag, Post, Comment
+from rest_framework import serializers
+
+from .models import Category, Comment, Post, Tag
 
 User = get_user_model()
 BACKEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:8001')

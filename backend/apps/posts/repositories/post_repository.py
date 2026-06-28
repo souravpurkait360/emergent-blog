@@ -4,8 +4,8 @@ from django.db.models import F, Q, QuerySet
 from django.utils.text import slugify
 
 from apps.core.enums import PostStatus
-from apps.core.exceptions import NotFoundException, PermissionDeniedException
-from apps.posts.models import Category, Post, Tag
+from apps.core.exceptions import NotFoundException
+from apps.posts.models import Post, Tag
 
 BACKEND_URL = os.environ.get("FRONTEND_URL", "")
 
@@ -40,14 +40,14 @@ class PostRepository:
     def get_by_slug(self, slug: str) -> Post:
         try:
             return self._base_queryset().get(slug=slug)
-        except Post.DoesNotExist:
-            raise NotFoundException(f"Post '{slug}' not found")
+        except Post.DoesNotExist as exc:
+            raise NotFoundException(f"Post '{slug}' not found") from exc
 
     def get_by_id(self, post_id: int) -> Post:
         try:
             return self._base_queryset().get(pk=post_id)
-        except Post.DoesNotExist:
-            raise NotFoundException(f"Post with id {post_id} not found")
+        except Post.DoesNotExist as exc:
+            raise NotFoundException(f"Post with id {post_id} not found") from exc
 
     def get_all(self) -> QuerySet:
         return self._base_queryset().order_by("-created_at")

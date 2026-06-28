@@ -27,14 +27,14 @@ class UserRepository:
     def get_user_by_email(self, email: str) -> User:
         try:
             return User.objects.get(email=email)
-        except User.DoesNotExist:
-            raise NotFoundException(f"User with email '{email}' not found")
+        except User.DoesNotExist as exc:
+            raise NotFoundException(f"User with email '{email}' not found") from exc
 
     def get_user_by_id(self, user_id: int) -> User:
         try:
             return User.objects.get(pk=user_id)
-        except User.DoesNotExist:
-            raise NotFoundException(f"User with id '{user_id}' not found")
+        except User.DoesNotExist as exc:
+            raise NotFoundException(f"User with id '{user_id}' not found") from exc
 
     def email_exists(self, email: str) -> bool:
         return User.objects.filter(email=email).exists()
