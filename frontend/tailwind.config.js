@@ -1,82 +1,72 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    darkMode: ["class"],
-    content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./public/index.html"
-  ],
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)'
-      },
+      // ─── Design Tokens ────────────────────────────────────────────────
+      // All colors, fonts, and spacing defined here.
+      // NEVER use hardcoded hex values in component files.
       colors: {
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))'
+        // Canvas / surface
+        canvas:  '#FDFDFD',
+        surface: '#FFFFFF',
+
+        // Text hierarchy
+        ink: {
+          DEFAULT: '#050505',
+          muted:   '#52525B',
+          ghost:   '#A1A1AA',
         },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))'
-        },
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))'
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))'
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))'
-        },
+
+        // Brand accent
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))'
+          DEFAULT: '#002FA7',
+          hover:   '#002280',
         },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))'
+
+        // Borders & dividers
+        edge: '#E4E4E7',
+
+        // Muted backgrounds
+        wash: '#F4F4F5',
+
+        // Semantic status
+        status: {
+          published: '#16a34a',
+          draft:     '#ca8a04',
         },
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        chart: {
-          '1': 'hsl(var(--chart-1))',
-          '2': 'hsl(var(--chart-2))',
-          '3': 'hsl(var(--chart-3))',
-          '4': 'hsl(var(--chart-4))',
-          '5': 'hsl(var(--chart-5))'
-        }
+      },
+
+      fontFamily: {
+        // Use `font-display` for headings, `font-body` for prose, `font-code` for mono
+        display: ['Outfit', 'sans-serif'],
+        body:    ['IBM Plex Sans', 'sans-serif'],
+        code:    ['JetBrains Mono', 'monospace'],
+      },
+
+      fontSize: {
+        'hero':  ['clamp(2.5rem, 6vw, 4rem)', { lineHeight: '1', letterSpacing: '-0.04em', fontWeight: '900' }],
+        'h1':    ['clamp(2rem, 4vw, 3rem)',   { lineHeight: '1.1', letterSpacing: '-0.03em', fontWeight: '800' }],
+        'h2':    ['1.5rem',  { lineHeight: '1.2', fontWeight: '700' }],
+        'h3':    ['1.25rem', { lineHeight: '1.3', fontWeight: '600' }],
+      },
+
+      boxShadow: {
+        card:  '0 4px 24px rgb(0 0 0 / 0.06)',
+        hover: '0 8px 32px rgb(0 0 0 / 0.10)',
+      },
+
+      animation: {
+        'fade-up': 'fadeUp 0.4s ease both',
+        'spin-slow': 'spin 1.5s linear infinite',
       },
       keyframes: {
-        'accordion-down': {
-          from: {
-            height: '0'
-          },
-          to: {
-            height: 'var(--radix-accordion-content-height)'
-          }
+        fadeUp: {
+          '0%':   { opacity: '0', transform: 'translateY(16px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        'accordion-up': {
-          from: {
-            height: 'var(--radix-accordion-content-height)'
-          },
-          to: {
-            height: '0'
-          }
-        }
       },
-      animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out'
-      }
-    }
+    },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 };

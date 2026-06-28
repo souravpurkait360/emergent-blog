@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.backends.legacy:build"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+src = ["apps", "blog_project"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes – unused imports, undefined names
+    "I",    # isort – import ordering
+    "B",    # bugbear – common pitfalls
+    "N",    # naming conventions
+    "UP",   # pyupgrade – modern syntax
+    "SIM",  # simplify
+    "C4",   # comprehension style
+    "RET",  # return values
+    "TID",  # tidy imports
+    "RUF",  # ruff-specific rules
+    "E741", # ambiguous variable name (l, O, I)
+    "F841", # local variable assigned but never used
+    "F401", # imported but unused
+    "PIE",  # misc linting
+    "T20",  # print statements in production code
+]
+ignore = [
+    "B008",   # function call in default arg (used in DRF)
+    "SIM108", # ternary operator (readability preference)
+    "RET505", # unnecessary else after return
+    "N999",   # invalid module name
+    "T201",   # print found (allowed for server.py startup logs)
+    "UP007",  # use X | Y for type union (3.10+ only)
+    "RUF012", # mutable class var annotation
+]
+
+# Guardrails enforced by Ruff:
+# F841 – local variable assigned but never used (AGENTS.md: no unused vars)
+# F401 – imported but unused (AGENTS.md: clean imports at top)
+# I001 – import ordering (AGENTS.md: imports at top of file)
+# E741 – ambiguous names l/O/I (AGENTS.md: no single-letter vars)
+# N806 – variable in function not lowercase
+# B006 – mutable default argument (thread-safety)
+#
+# Guardrails NOT enforceable by Ruff (enforced by convention):
+# – 1 APIView class per file (AGENTS.md)
+# – Max 200 lines per file (AGENTS.md)
+# – No ModelViewSets (AGENTS.md)
+# – ORM queries only in repositories (AGENTS.md)
+# – Singleton pattern (AGENTS.md)
+# – Enums for static values (AGENTS.md)
+
+[tool.ruff.lint.per-file-ignores]
+"*/tests/*" = ["S101", "T201", "F841"]
+"server.py" = ["T201"]
+"manage.py" = ["T201"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "blog_project"]
+combine-as-imports = true
+force-sort-within-sections = true
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true

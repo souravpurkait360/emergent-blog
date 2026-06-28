@@ -1,47 +1,45 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import Navbar from './components/Navbar';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Toaster } from 'sonner';
+import './App.css';
+import Navbar from './components/common/Navbar';
+import LoadingSpinner from './components/common/LoadingSpinner';
 import Home from './pages/Home';
 import PostDetail from './pages/PostDetail';
 import PostEditor from './pages/PostEditor';
 import Auth from './pages/Auth';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
-import { Toaster } from 'sonner';
-import './App.css';
+import useAuthStore from './store/authStore';
 
-function ProtectedRoute({ children, admin = false }) {
-  const { user } = useAuth();
-  if (user === undefined) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-[#002FA7] border-t-transparent rounded-full animate-spin" />
-    </div>
-  );
+function ProtectedRoute({ children, adminOnly = false }) {
+  const user = useAuthStore((state) => state.user);
+  if (user === undefined) return <LoadingSpinner />;
   if (!user) return <Navigate to="/auth" replace />;
-  if (admin && user.role !== 'admin') return <Navigate to="/" replace />;
+  if (adminOnly && user.role !== 'admin') return <Navigate to="/" replace />;
   return children;
 }
 
-function App() {
+export default function App() {
+  const init = useAuthStore((state) => state.init);
+
+  useEffect(() => { init(); }, [init]);
+
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <div className="min-h-screen bg-[#FDFDFD]">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/post/:slug" element={<PostDetail />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/write" element={<ProtectedRoute><PostEditor /></ProtectedRoute>} />
-            <Route path="/write/:slug" element={<ProtectedRoute><PostEditor /></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-            <Route path="/admin" element={<ProtectedRoute admin><AdminDashboard /></ProtectedRoute>} />
-          </Routes>
-        </div>
-        <Toaster position="bottom-right" richColors />
-      </BrowserRouter>
-    </AuthProvider>
+    <BrowserRouter>
+      <div className="min-h-screen bg-canvas font-body">
+        <Navbar />
+        <Routes>
+          <Route path="/"              element={<Home />} />
+          <Route path="/post/:slug"    element={<PostDetail />} />
+          <Route path="/auth"          element={<Auth />} />
+          <Route path="/write"         element={<ProtectedRoute><PostEditor /></ProtectedRoute>} />
+          <Route path="/write/:slug"   element={<ProtectedRoute><PostEditor /></ProtectedRoute>} />
+          <Route path="/profile"       element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/admin"         element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
+        </Routes>
+      </div>
+      <Toaster position="bottom-right" richColors />
+    </BrowserRouter>
   );
 }
-
-export default App;
